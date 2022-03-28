@@ -1,51 +1,39 @@
-#include <signal.h>
+// #include <signal.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>
+// #include <string.h>
+// #include <stdlib.h>
+// #include <sys/types.h>
 #include <sys/wait.h>
-
-void sig_handler(int signum)
+int main(int argc, char const *argv[])
 {
-	int i=5;
-	int j=0;
-	int k;
-	switch (signum) {
-		case SIGCHLD:
-			printf("I am in sighandler\n");
-			fflush(stdout);
-			raise(SIGUSR1);
-		case SIGUSR1: 
-			printf("I am in sighandler3333\n");
-			fflush(stdout);
-			k=i/j;
-			printf("lalala\n");
-			fflush(stdout);
-			break;
-		case SIGFPE:
-			printf("I am in sighandler2\n");
-			fflush(stdout);
-			exit(1);
-			}
-}
-
-void sig_handler2(int signum)
-{
-	printf("I am in sighandler2222\n");
-	fflush(stdout);
-	exit(1);
-}
-
-int main()
-{
-	int status;
-	signal (SIGCHLD, sig_handler);
-	signal (SIGUSR1, sig_handler);
-	signal (SIGFPE, sig_handler);
-	if (!(fork())) {
-		exit(1);
+	// printf("%s\n", argv[1]);
+	int id = 0;
+	if(argc > 1)
+	{
+		for (size_t i = 0; argv[1][i] != '\0'; i++)
+		{
+			id *= 10;
+			id += (int)(argv[1][i] - '0');
+		}
+		
 	}
-	wait(&status);
-
+	printf("I am %d pogram\n", id);
+	id++;
+	int pid = fork();
+	if (pid == 0)
+	{
+		int length = snprintf( NULL, 0, "%d", id);
+		char* str = malloc( length + 1 );
+		snprintf(str, length + 1, "%d", id);
+		char *args[3] = {"./main", str, NULL};
+        execvp(args[0], args);
+		free(str);
+	}
+	else
+	{
+		// wait(NULL);
+		// printf("My child is dead\n");
+	}
+	return 0;
 }
