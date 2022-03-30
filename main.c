@@ -34,16 +34,25 @@ void sig_handler(int signum)
 		case SIGINT: 
 			printf("I am in SIGINT\n");
 			fflush(stdout);
-			int *a = 0;
-			*a = 5;
+			if (!(fork())) {
+				int *a = 0;
+				*a = 5;
+			}
+			
 			break;
 		case SIGSEGV:
 			printf("I am in SIGSEGV\n");
 			fflush(stdout);
 			int id2 = getpid();
+			if (!(fork())) {
+				double a = 5/0;
+			}
 			exit(1);
 			break;
-		
+		case SIGFPE:
+			printf("I am in SIGFPE\n");
+			fflush(stdout);
+			exit(1);
 
 
 
@@ -61,10 +70,7 @@ void sig_handler(int signum)
 			printf("lalala\n");
 			fflush(stdout);
 			break;
-		case SIGFPE:
-			printf("I am in sighandler2\n");
-			fflush(stdout);
-			exit(1);
+		
 	}
 }
 
