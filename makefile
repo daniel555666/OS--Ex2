@@ -1,13 +1,12 @@
 CC = gcc
 FLAGS= -Wall -Werror -g
 
-all: main 
-run: Main
+all: Main
+run: main
 	./$^
-main: main.o
-	$(CC) $(FLAGS) $^ -o Main
-%.o: %.c
-	$(CC) -c $< -o $@
+Main: main.c
+	$(CC)  main.c -o main
+
 clean:
-	rm *.o Main 
+	rm main
 .PHONY: all run
